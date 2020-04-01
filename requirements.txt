@@ -1,0 +1,14 @@
+flask
+flask-migrate
+flask-sqlalchemy
+flask-script
+flask-wtf
+flask-socketio
+mysql-connector-python
+jsonpickle
+requests
+eventlet
+pycryptodome
+flask-cors
+dataclasses
+typing

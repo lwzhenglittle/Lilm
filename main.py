@@ -20,6 +20,7 @@ if act == 'add':
         if isbn == 'x':
             break
         add(isbn)
+        print('done')
 if act == 'qa':
     res = data.query_all()
     for i in res :
@@ -31,3 +32,4 @@ if act == 'qs':
         if isbn == 'x':
             break
         query_isbn(isbn)
+        print('------')

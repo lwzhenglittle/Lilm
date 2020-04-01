@@ -26,6 +26,7 @@ class Details(Base):
 
     isbn = Column(String(13), primary_key=True)
     abstract = Column(Text)
+    name = Column(String(128))
     book_intro = Column(Text)
     author_intro = Column(Text)
     catalog = Column(Text)
@@ -44,8 +45,10 @@ class Rating(Base):
     value = Column(Float)
 
 
+#engine = create_engine(
+#    'mysql+mysqlconnector://root:yuyu20040423@localhost:3306/lilm')
 engine = create_engine(
-    'mysql+mysqlconnector://root:yuyu20040423@localhost:3306/lilm')
+    'sqlite:///test.db')
 Base.metadata.create_all(engine)
 DBSession = sessionmaker(bind=engine)
 
@@ -54,10 +57,28 @@ def add(source):
     session = DBSession()
     session.add(Books(isbn=source.isbn, name=source.title,
                       cover_url=source.cover_url))
-    session.add(Details(isbn=source.isbn, abstract=source.abstract, book_intro=source.book_intro,
+    session.add(Details(isbn=source.isbn, abstract=source.abstract, name = source.title, book_intro=source.book_intro,
                         author_intro=source.book_intro, catalog=source.catalog, labels=','.join(source.labels), url=source.url))
     session.add(Rating(isbn=source.isbn, count=source.rating['count'], info=source.rating['rating_info'],
                        star_count=source.rating['star_count'], value=source.rating['value']))
     session.add
     session.commit()
     session.close()
+
+def query_all():
+    session = DBSession()
+    res = session.query(Books).all()
+    session.close()
+    return res
+
+def query_detail(isbn):
+    session = DBSession()
+    res = session.query(Details).filter(Details.isbn==isbn).one()
+    session.close()
+    return res
+
+def query_rating(isbn):
+    session = DBSession()
+    res = session.query(Rating).filter(Rating.isbn==isbn).one()
+    session.close()
+    return res;
